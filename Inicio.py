@@ -1,5 +1,5 @@
 from tkinter import *
-from PIL import Image
+from PIL import Image,ImageTk
 
 #Raíz
 root=Tk()
@@ -18,15 +18,15 @@ my_canvas.pack(pady=20)
 #img = PhotoImage(file="imagen2.png")
 #my_image=my_canvas.create_image(260,125,anchor=NW,image=img)
 #
-nom_img="imagen2.png"
+nom_img="imagen1.jpg"
 imagen = Image.open(nom_img)
-img = PhotoImage(file=nom_img)
+img = ImageTk.PhotoImage(file=nom_img)
 my_image=my_canvas.create_image(0,0,anchor=NW,image=img)
 
 def move(e):
     global img
     imagen = Image.open(nom_img)
-    img = PhotoImage(file=nom_img)
+    img = ImageTk.PhotoImage(file=nom_img)
     my_image=my_canvas.create_image(e.x,e.y,image=img)
     my_label.config(text="Coordinates: x: "+str(e.x)+"y: "+str(e.y))
 
