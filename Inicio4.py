@@ -1,6 +1,5 @@
 import cv2
 from tkinter import *
-import tkinter
 import numpy as np
 from PIL import Image, ImageTk
 
@@ -23,9 +22,9 @@ imagen = ImageTk.PhotoImage(Image.fromarray(cv2.imread('imagen1.jpg')))
 #imagen2 = cv2.imread('imagen2.png')
 #cv2.imshow('Prueba de imagen 2',imagen2)
 #cv2.waitKey(0)
-lbl = tkinter.Label(window, image=imagen)
+lbl = Label(window, image=imagen)
 lbl.pack()
-botonNuevo1 = tkinter.Button(width=500, height=500, image=imagen,justify="right")
+botonNuevo1 = Button(width=500, height=500, image=imagen,justify="right")
 botonNuevo1.place(x=500, y=100)
 
 label2 = Label(window,image=imagen,width=100,height=150)

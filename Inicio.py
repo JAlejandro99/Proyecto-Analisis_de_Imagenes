@@ -1,40 +1,47 @@
 from tkinter import *
+from tkinter import filedialog
+import cv2
 from PIL import Image,ImageTk
+from numpy import *
+
+def drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+
+def drag_motion(event):
+    widget = event.widget
+    x = widget.winfo_x() - widget.startX + event.x
+    y = widget.winfo_y() - widget.startY + event.y
+    widget.place(x=x,y=y)
+
+#Funcion con la que se pide una imagen al usuario
+def addImg():
+    global imagenes
+    #Pedir nombre del archivo
+    nom_img = filedialog.askopenfilename(title="Seleccione archivo",filetypes=(("jpeg files",".jpg"),("png files",".png"),("all files",".*")))
+    img = cv2.imread(nom_img)
+    imagenes = append(ImageTk.PhotoImage(Image.fromarray(img)),imagenes)
+    label = Label(frame,image=imagenes[0],width=100,height=150)
+    label.place(x=100,y=100)
+    label.bind("<Button-1>",drag_start)
+    label.bind("<B1-Motion>",drag_motion)
 
 #Raíz
 root=Tk()
 root.title("Ventana de pruebas")
 #root.config(bd=15,cursor="hand2")
-root.geometry("800x600")
-w=600
-h=400
+root.geometry("900x700")
+w=700
+h=500
 x=w/2
 y=h/2
+imagenes = array(0)
 
-my_canvas=Canvas(root,width=w,heigh=h,bg="gray")
-my_canvas.pack(pady=20)
+frame=Frame(root,height=h,width=w,bg="gray")
+frame.pack(pady=50)
 
-#Agregando una imagen
-#img = PhotoImage(file="imagen2.png")
-#my_image=my_canvas.create_image(260,125,anchor=NW,image=img)
-#
-nom_img="imagen1.jpg"
-imagen = Image.open(nom_img)
-img = ImageTk.PhotoImage(file=nom_img)
-my_image=my_canvas.create_image(0,0,anchor=NW,image=img)
-
-def move(e):
-    global img
-    imagen = Image.open(nom_img)
-    img = ImageTk.PhotoImage(file=nom_img)
-    my_image=my_canvas.create_image(e.x,e.y,image=img)
-    my_label.config(text="Coordinates: x: "+str(e.x)+"y: "+str(e.y))
-
-my_label = Label(root,text="")
-my_label.pack(pady=20)
-
-my_canvas.bind('<B1-Motion>',move)
-
-
+bAddImg=Button(root,text="Añadir Imagen",command=lambda:addImg(),font=(18))
+bAddImg.pack()
 
 root.mainloop()
