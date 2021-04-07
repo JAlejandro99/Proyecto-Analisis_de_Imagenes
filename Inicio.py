@@ -26,7 +26,7 @@ def addImg():
     #img.size[1] #Esto es el número de filas
     imagenes = append(ImageTk.PhotoImage(file=nom_img),imagenes)
     #label = Label(frame,image=imagenes[0],width=100,height=150)
-    label = Label(frame,image=imagenes[0],width=img.size[0],height=img.size[1])
+    label = Label(frame,image=imagenes[0],width=img.size[0]-4,height=img.size[1]-4,bg="gray")
     label.place(x=100,y=100)
     label.bind("<Button-1>",drag_start)
     label.bind("<B1-Motion>",drag_motion)
