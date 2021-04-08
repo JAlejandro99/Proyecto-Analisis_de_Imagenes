@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-import cv2
+import cv2 as cv
 from PIL import Image,ImageTk
 from numpy import *
 from prueba import *
