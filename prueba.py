@@ -119,8 +119,8 @@ def ecualizacion(im):
     cv.waitKey()
 
 def principal():
-    im=cv.imread("Imagen1.png")
-    im2=cv.imread("Imagen1.png")
+    im=cv.imread("Imagen1.jpg")
+    im2=cv.imread("Imagen1.jpg")
     hist=cv.calcHist([im2], [0], None, [256], [0, 256])
     a=50
     
@@ -133,4 +133,4 @@ def principal():
     #Estiramiento del histograma
     estiramiento(hist,im2)
     #Histograma de la imagen ecualizada
-    ecualizacion(im) 
+    ecualizacion(im)
