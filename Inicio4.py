@@ -16,8 +16,7 @@ def drag_motion(event):
 
 
 window = Tk()
-
-imagen = ImageTk.PhotoImage(Image.fromarray(cv2.imread('imagen1.jpg')))
+imagen = ImageTk.PhotoImage(Image.fromarray(cv2.cvtColor(cv2.imread('imagen1.jpg'),cv2.COLOR_BGR2RGB)))
 #cv2.imshow('Prueba de imagen',imagen)
 #imagen2 = cv2.imread('imagen2.png')
 #cv2.imshow('Prueba de imagen 2',imagen2)

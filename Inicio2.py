@@ -22,6 +22,7 @@ def addImg():
     nom_img = filedialog.askopenfilename(title="Seleccione archivo",filetypes=(("jpeg files",".jpg"),("png files",".png"),("all files",".*")))
     #Las siguientes 2 líneas utilizan cv2
     img = cv2.imread(nom_img)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     imagenes = append(ImageTk.PhotoImage(Image.fromarray(img)),imagenes)
     label = Label(frame,image=imagenes[0],width=100,height=150)
     label.place(x=100,y=100)
