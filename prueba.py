@@ -117,10 +117,45 @@ def ecualizacion(im):
     plt.show()
     cv.imshow('Ecualización', im2)
     cv.waitKey()
+    
+# Función que realiza estrechamiento del histograma
+# Recibe como parámetros la ruta de la imagen y los valores deseados de compresión
+# Devuelve una nueva imagen (matriz numpy) con los cambios realizados
+def estrechamiento(rimg, Cmin, Cmax):
+    
+    #Abre la imagen original
+    img = cv.imread(rimg)
+    
+    #Crea una copia de la imagen en escala de grises
+    nueva_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    
+    # Valores de la formula
+    rmin = np.amin(img)
+    rmax = np.amax(img)
+
+    # Cambio de valores a la imagen de acuerdo a la fórmula
+    for i in range(0, nueva_img.shape[0]):
+        for j in range(0, nueva_img.shape[1]):
+            nueva_img[i,j] = round(((Cmax-Cmin)/(rmax-rmin))*nueva_img[i,j] + Cmin)
+    
+    # Calcula el histograma con estrechamiento
+    nhistograma = cv.calcHist([nueva_img], [0], None, [256], [0, 256])
+    # Muestra el histograma
+    plt.plot(nhistograma, color='gray' )
+    plt.title("Histograma Estrechamiento")
+    plt.xlabel('Intensidad de iluminacion')
+    plt.ylabel('Cantidad de pixeles')
+    plt.show()
+    
+    # Muestra los cambios realizados en la imagen
+    cv.imshow('Estrechamiento', nueva_img)
+    cv.waitKey()
+    
+    return nueva_img
 
 def principal():
-    im=cv.imread("Imagen1.jpg")
-    im2=cv.imread("Imagen1.jpg")
+    im=cv.imread("Imagen1.png")
+    im2=cv.imread("Imagen1.png")
     hist=cv.calcHist([im2], [0], None, [256], [0, 256])
     a=50
     
@@ -134,3 +169,7 @@ def principal():
     estiramiento(hist,im2)
     #Histograma de la imagen ecualizada
     ecualizacion(im)
+    # Estrechamiento de Histograma
+    estrechamiento("Imagen1.png", 50, 150)
+    
+principal()
