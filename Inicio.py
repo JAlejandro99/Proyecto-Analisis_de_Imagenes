@@ -47,6 +47,9 @@ def addImg():
 def verHist():
     #Histograma de la imagen original
     hist=h_original(im[img_sel])
+    
+def verHistRGB():
+    histogramas_RGB(nomb_imagenes[0])
 
 def despIzqHist():
     a = 50
@@ -62,6 +65,10 @@ def estHist():
 
 def histEcual():
     ecualizacion(im[img_sel])
+
+def histEstr():
+    estrechamiento(nomb_imagenes[0],50, 150)
+
 
 #Raíz
 root=Tk()
@@ -87,6 +94,10 @@ bAddImg.pack(pady=10)
 bVerHist=Button(root,text="Ver histograma",command=lambda:verHist(),font=(18))
 bVerHist.pack(pady=10)
 
+#Ver histogramas RGB
+bPrueba=Button(root,text="Ver histogramas RGB",command=lambda:verHistRGB(),font=(18))
+bPrueba.pack(pady=10)
+
 #Desplazamiento del histograma a la izquierda
 bPrueba=Button(root,text="Desplazar histograma a la izquierda",command=lambda:despIzqHist(),font=(18))
 bPrueba.pack(pady=10)
@@ -101,6 +112,10 @@ bPrueba.pack(pady=10)
 
 #Histograma de la imagen ecualizada
 bPrueba=Button(root,text="Histograma de la imagen ecualizada",command=lambda:histEcual(),font=(18))
+bPrueba.pack(pady=10)
+
+#Estrechamiento del histograma
+bPrueba=Button(root,text="Estrechamiento del histograma",command=lambda:histEstr(),font=(18))
 bPrueba.pack(pady=10)
 
 frame=Frame(root,height=h,width=w,bg="gray")
