@@ -7,6 +7,7 @@ def h_original(im):
     im2=cv.cvtColor(im, cv.COLOR_BGR2GRAY)
     hist=cv.calcHist([im2], [0], None, [256], [0, 256])
     plt.plot(hist, color='gray' )
+    plt.title("Histograma Original")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
@@ -15,6 +16,28 @@ def h_original(im):
     
     return hist
     
+# Función que muestra histogramas de los canales RGB
+# Recibe como parámetro la ruta de la imagen
+def histogramas_RGB(r_img):
+    
+    img = cv.imread(r_img)
+    # Lista con los 3 histogramas
+    histogramas = []
+    # Histograma canal azul
+    histogramas.append(cv.calcHist([img], [0], None, [256], [0, 256]))
+    # Histograma canal Verde
+    histogramas.append(cv.calcHist([img], [1], None, [256], [0, 256]))
+    #Histograma canal Azul
+    histogramas.append(cv.calcHist([img], [2], None, [256], [0, 256]))
+    
+    # Imprime los histogramas
+    colores = ["blue", "green", "red"]
+    for i in range (0,3):
+        plt.plot(histogramas[i], color=colores[i] )
+    plt.title("Histogramas Canales RGB")
+    plt.xlabel('Intensidad de iluminacion')
+    plt.ylabel('Cantidad de pixeles')
+    plt.show()
 
 def desplazamiento_d(im,a):
     #DESPLAZAMIENTO HACIA LA DERECHA
@@ -38,6 +61,7 @@ def desplazamiento_d(im,a):
     
     hist= cv.calcHist([im], [0], None, [256], [0, 256])
     plt.plot(hist, color='gray' )
+    plt.title("Histograma Desplazamiento Derecha")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
@@ -67,6 +91,7 @@ def desplazamiento_i(im,a):
     
     hist= cv.calcHist([im], [0], None, [256], [0, 256])
     plt.plot(hist, color='gray' )
+    plt.title("Histograma Desplazamiento Izquierda")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
@@ -100,6 +125,7 @@ def estiramiento(hist,im):
     
     hist2= cv.calcHist([im], [0], None, [256], [0, 256])
     plt.plot(hist2, color='gray' )
+    plt.title("Histograma Estiramiento")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
@@ -112,6 +138,7 @@ def ecualizacion(im):
     im2=cv.equalizeHist(im2)
     hist4=cv.calcHist([im2], [0], None, [256], [0, 256])
     plt.plot(hist4, color='gray' )
+    plt.title("Histograma Ecualización")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
@@ -121,10 +148,10 @@ def ecualizacion(im):
 # Función que realiza estrechamiento del histograma
 # Recibe como parámetros la ruta de la imagen y los valores deseados de compresión
 # Devuelve una nueva imagen (matriz numpy) con los cambios realizados
-def estrechamiento(rimg, Cmin, Cmax):
+def estrechamiento(r_img, Cmin, Cmax):
     
     #Abre la imagen original
-    img = cv.imread(rimg)
+    img = cv.imread(r_img)
     
     #Crea una copia de la imagen en escala de grises
     nueva_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
@@ -161,6 +188,8 @@ def principal():
     
     #Histograma de la imagen original
     hist=h_original(im)
+    #Histogramas RGB
+    histogramas_RGB("Imagen1.png")
     #Histograma desplazado a la derecha
     desplazamiento_d(im,a)
     #Histograma desplazado a la izquierda
