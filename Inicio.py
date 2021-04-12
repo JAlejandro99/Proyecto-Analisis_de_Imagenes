@@ -67,6 +67,10 @@ def addImg():
         imagenesLabel[seleccion_anterior].config(bd=0)
     seleccion_anterior = img_sel
 
+def saveImg():
+    #nom_img = filedialog.askopenfilename(title="Seleccione archivo",filetypes=(("jpeg files",".jpg"),("png files",".png"),("all files",".*")))
+    pass
+
 def agregar_img(img):
     global nomb_imagenes,im,imagenes,imagenesLabel,img_sel,seleccion_anterior
     #Pedir nombre del archivo
@@ -184,6 +188,9 @@ Grid.columnconfigure(root,7,weight=1)
 
 bAddImg=Button(root,text="Abrir Imagen",command=lambda:addImg())
 bAddImg.grid(row=0,column=0)
+
+bSaveImg=Button(root,text="Guardar Imagen",command=lambda:saveImg())
+bSaveImg.grid(row=0,column=1)
 
 #Tenemos que descubrir qué imagen se seleccionó con anterioridad y la pasamos a la funcion ver histograma
 img1 = leer_imagen("histograma2.png")
