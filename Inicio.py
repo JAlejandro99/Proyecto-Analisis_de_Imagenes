@@ -94,7 +94,7 @@ def verHist():
     
 #Hacer que reciba imagenes en lugar de el nombre
 def verHistRGB():
-    histogramas_RGB(nomb_imagenes[img_sel])
+    histogramas_RGB(im[img_sel])
 
 def despIzqHist():
     a = 50
@@ -117,7 +117,7 @@ def histEcual():
 
 #Hacer que reciba imagenes en lugar de un nombre
 def histEstr():
-    img = estrechamiento(nomb_imagenes[img_sel],50, 150)
+    img = estrechamiento(im[img_sel],50, 150)
     agregar_img(img)
 
 def leer_imagen(nombre):

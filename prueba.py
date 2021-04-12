@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import cv2 as cv
+import copy
 
 def h_original(im):
     #Histograma de imagen original
@@ -18,9 +19,8 @@ def h_original(im):
     
 # Función que muestra histogramas de los canales RGB
 # Recibe como parámetro la ruta de la imagen
-def histogramas_RGB(r_img):
-    
-    img = cv.imread(r_img)
+def histogramas_RGB(img):
+    #img = cv.imread(r_img)
     # Lista con los 3 histogramas
     histogramas = []
     # Histograma canal azul
@@ -41,7 +41,7 @@ def histogramas_RGB(r_img):
 
 def desplazamiento_d(im2,a):
     #DESPLAZAMIENTO HACIA LA DERECHA
-    im = im2
+    im = copy.copy(im2)
     i=0
     while i<im.shape[0]:
         j=0
@@ -70,8 +70,9 @@ def desplazamiento_d(im2,a):
     cv.waitKey()
     return im
 
-def desplazamiento_i(im,a):
+def desplazamiento_i(im2,a):
     #DESPLAZAMIENTO HACIA LA IZQUIERDA
+    im = copy.copy(im2)
     i=0
     while i<im.shape[0]:
         j=0
@@ -100,9 +101,9 @@ def desplazamiento_i(im,a):
     cv.waitKey()
     return im
 
-def estiramiento(hist,im):
+def estiramiento(hist,im2):
+    im = copy.copy(im2)
     frec=[]
-    
     k=0
     for i in range(0,hist.shape[0]):
         for j in range(0,hist.shape[1]):
@@ -136,8 +137,9 @@ def estiramiento(hist,im):
     
     return im
 
-def ecualizacion(im):
+def ecualizacion(im2):
     #ECUALIZACIÓN
+    im = copy.copy(im2)
     im2=cv.cvtColor(im, cv.COLOR_BGR2GRAY)
     im2=cv.equalizeHist(im2)
     hist4=cv.calcHist([im2], [0], None, [256], [0, 256])
@@ -153,11 +155,11 @@ def ecualizacion(im):
 # Función que realiza estrechamiento del histograma
 # Recibe como parámetros la ruta de la imagen y los valores deseados de compresión
 # Devuelve una nueva imagen (matriz numpy) con los cambios realizados
-def estrechamiento(r_img, Cmin, Cmax):
+def estrechamiento(img2, Cmin, Cmax):
     
     #Abre la imagen original
-    img = cv.imread(r_img)
-    
+    #img = cv.imread(r_img)
+    img = copy.copy(img2)
     #Crea una copia de la imagen en escala de grises
     nueva_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     
