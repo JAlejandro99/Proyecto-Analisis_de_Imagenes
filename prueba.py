@@ -39,8 +39,9 @@ def histogramas_RGB(r_img):
     plt.ylabel('Cantidad de pixeles')
     plt.show()
 
-def desplazamiento_d(im,a):
+def desplazamiento_d(im2,a):
     #DESPLAZAMIENTO HACIA LA DERECHA
+    im = im2
     i=0
     while i<im.shape[0]:
         j=0
@@ -67,7 +68,7 @@ def desplazamiento_d(im,a):
     plt.show()
     cv.imshow('DesDerecha', im)
     cv.waitKey()
-
+    return im
 
 def desplazamiento_i(im,a):
     #DESPLAZAMIENTO HACIA LA IZQUIERDA
@@ -97,6 +98,7 @@ def desplazamiento_i(im,a):
     plt.show()
     cv.imshow('DesIzquierda', im)
     cv.waitKey()
+    return im
 
 def estiramiento(hist,im):
     frec=[]
@@ -131,6 +133,8 @@ def estiramiento(hist,im):
     plt.show()
     cv.imshow('Estiramiento', im)
     cv.waitKey()
+    
+    return im
 
 def ecualizacion(im):
     #ECUALIZACIÓN
@@ -144,6 +148,7 @@ def ecualizacion(im):
     plt.show()
     cv.imshow('Ecualización', im2)
     cv.waitKey()
+    return im2
     
 # Función que realiza estrechamiento del histograma
 # Recibe como parámetros la ruta de la imagen y los valores deseados de compresión
@@ -200,5 +205,4 @@ def principal():
     ecualizacion(im)
     # Estrechamiento de Histograma
     estrechamiento("Imagen1.png", 50, 150)
-    
-principal()
+#principal()
