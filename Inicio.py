@@ -39,6 +39,8 @@ def button_hover(e):
         status_label.config(text="Histograma de la imagen ecualizada")
     elif widget==b7:
         status_label.config(text="Estrechamiento del histograma")
+    elif widget==b8:
+        status_label.config(text="Eliminar imagen")
 
 def button_hover_leave(e):
     status_label.config(text="")
@@ -55,12 +57,11 @@ def addImg():
     im.append(img)
     img = cv.cvtColor(img,cv.COLOR_BGR2RGB)
     imagenes.append(ImageTk.PhotoImage(Image.fromarray(img)))
-    label = Label(frame,image=imagenes[len(imagenes)-1],width=w,height=h,bg="gray")
-    label.place(x=100,y=100)
-    label.bind("<Button-1>",drag_start)
-    label.bind("<B1-Motion>",drag_motion)
-    imagenesLabel.append(label)
     img_sel = len(imagenes)-1
+    imagenesLabel.append(Label(frame,image=imagenes[len(imagenes)-1],width=w,height=h,bg="gray"))
+    imagenesLabel[img_sel].place(x=100,y=100)
+    imagenesLabel[img_sel].bind("<Button-1>",drag_start)
+    imagenesLabel[img_sel].bind("<B1-Motion>",drag_motion)
     imagenesLabel[img_sel].config(bd=10,relief="groove")
     if seleccion_anterior!=-1:
         imagenesLabel[seleccion_anterior].config(bd=0)
@@ -76,12 +77,11 @@ def agregar_img(img):
     im.append(img)
     img = cv.cvtColor(img,cv.COLOR_BGR2RGB)
     imagenes.append(ImageTk.PhotoImage(Image.fromarray(img)))
-    label = Label(frame,image=imagenes[len(imagenes)-1],width=w,height=h,bg="gray")
-    label.place(x=100,y=100)
-    label.bind("<Button-1>",drag_start)
-    label.bind("<B1-Motion>",drag_motion)
-    imagenesLabel.append(label)
     img_sel = len(imagenes)-1
+    imagenesLabel.append(Label(frame,image=imagenes[len(imagenes)-1],width=w,height=h,bg="gray"))
+    imagenesLabel[img_sel].place(x=100,y=100)
+    imagenesLabel[img_sel].bind("<Button-1>",drag_start)
+    imagenesLabel[img_sel].bind("<B1-Motion>",drag_motion)
     imagenesLabel[img_sel].config(bd=10,relief="groove")
     if seleccion_anterior!=-1:
         imagenesLabel[seleccion_anterior].config(bd=0)
@@ -119,6 +119,17 @@ def histEcual():
 def histEstr():
     img = estrechamiento(im[img_sel],50, 150)
     agregar_img(img)
+
+def eliminar_img():
+    global imagenes,imagenesLabel,im,nomb_imagenes,seleccion_anterior,img_sel,frame
+    imagenesLabel[img_sel].config(bd=0)
+    imagenesLabel[img_sel].place_forget()
+    del imagenes[img_sel]
+    del imagenesLabel[img_sel]
+    del im[img_sel]
+    del nomb_imagenes[img_sel]
+    seleccion_anterior = -1
+    img_sel = -1
 
 def leer_imagen(nombre):
     img = cv.imread(nombre)
@@ -158,6 +169,7 @@ Grid.columnconfigure(root,3,weight=1)
 Grid.columnconfigure(root,4,weight=1)
 Grid.columnconfigure(root,5,weight=1)
 Grid.columnconfigure(root,6,weight=1)
+Grid.columnconfigure(root,7,weight=1)
 
 bAddImg=Button(root,text="Abrir Imagen",command=lambda:addImg())
 bAddImg.grid(row=0,column=0)
@@ -211,10 +223,17 @@ b7.grid(row=1,column=6)
 b7.bind("<Enter>",button_hover)
 b7.bind("<Leave>",button_hover_leave)
 
+#Eliminar imagen
+img8 = leer_imagen("eliminar.png")
+b8=Button(root,image=img8,width=80,command=lambda:eliminar_img())
+b8.grid(row=1,column=7)
+b8.bind("<Enter>",button_hover)
+b8.bind("<Leave>",button_hover_leave)
+
 frame=Frame(root,height=h,width=w,bg="gray")
-frame.grid(row=2,column=0,columnspan=7,sticky="nsew")
+frame.grid(row=2,column=0,columnspan=8,sticky="nsew")
 
 status_label = Label(root,text='',bd=1,relief=SUNKEN,anchor=E,font=(18),pady=10)
-status_label.grid(row=3,column=0,columnspan=7,sticky="nsew")
+status_label.grid(row=3,column=0,columnspan=8,sticky="nsew")
 
 root.mainloop()
