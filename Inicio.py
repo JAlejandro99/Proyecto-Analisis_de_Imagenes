@@ -123,11 +123,22 @@ def histEstr():
 def eliminar_img():
     global imagenes,imagenesLabel,im,nomb_imagenes,seleccion_anterior,img_sel,frame
     imagenesLabel[img_sel].config(bd=0)
-    imagenesLabel[img_sel].place_forget()
+    #imagenesLabel[img_sel].place_forget() #Lo olvidamos
+    #print("T0")
+    #print(len(imagenes))
+    #print(len(imagenesLabel))
+    #print(len(im))
+    #print(len(nomb_imagenes))
+    imagenesLabel[img_sel].destroy() #Lo eliminamos de forma definitiva
     del imagenes[img_sel]
     del imagenesLabel[img_sel]
     del im[img_sel]
     del nomb_imagenes[img_sel]
+    #print("T1")
+    #print(len(imagenes))
+    #print(len(imagenesLabel))
+    #print(len(im))
+    #print(len(nomb_imagenes))
     seleccion_anterior = -1
     img_sel = -1
 
