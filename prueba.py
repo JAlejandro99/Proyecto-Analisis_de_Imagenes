@@ -3,24 +3,37 @@ from matplotlib import pyplot as plt
 import cv2 as cv
 import copy
 
+#Histograma de imagen original
 def h_original(im):
-    #Histograma de imagen original
-    im2=cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+    
+    #Verifica si la imagen tiene 3 canales RGB
+    if(len(im.shape)==3):
+        #Si los tiene la convierte a escala de grises con un solo canal
+        im2=cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+    else:
+        #En caso de que la imagen original es de un canal se crea una copia
+        im2 = copy.copy(im)
+    
     hist=cv.calcHist([im2], [0], None, [256], [0, 256])
     plt.plot(hist, color='gray' )
     plt.title("Histograma Original")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
-    cv.imshow('Original', im)
-    cv.waitKey()
+    
+    #cv.imshow('Original', im)
+    #cv.waitKey()
     
     return hist
     
 # Función que muestra histogramas de los canales RGB
-# Recibe como parámetro la ruta de la imagen
+# Recibe como parámetro una imagen
 def histogramas_RGB(img):
-    #img = cv.imread(r_img)
+    
+    #Si la imagen tiene solo un canal (está en escala de grises) mostrará error
+    if(len(img.shape)==2):
+        return -1
+    
     # Lista con los 3 histogramas
     histogramas = []
     # Histograma canal azul
@@ -66,8 +79,8 @@ def desplazamiento_d(im2,a):
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
-    cv.imshow('DesDerecha', im)
-    cv.waitKey()
+    #cv.imshow('DesDerecha', im)
+    #cv.waitKey()
     return im
 
 def desplazamiento_i(im2,a):
@@ -97,8 +110,8 @@ def desplazamiento_i(im2,a):
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
-    cv.imshow('DesIzquierda', im)
-    cv.waitKey()
+    #cv.imshow('DesIzquierda', im)
+    #cv.waitKey()
     return im
 
 def estiramiento(hist,im2):
@@ -132,36 +145,45 @@ def estiramiento(hist,im2):
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
-    cv.imshow('Estiramiento', im)
-    cv.waitKey()
+    #cv.imshow('Estiramiento', im)
+    #cv.waitKey()
     
     return im
 
+#ECUALIZACIÓN
 def ecualizacion(im2):
-    #ECUALIZACIÓN
-    im = copy.copy(im2)
-    im2=cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-    im2=cv.equalizeHist(im2)
-    hist4=cv.calcHist([im2], [0], None, [256], [0, 256])
+    
+    #Verifica si la imagen tiene 3 canales RGB
+    if(len(im2.shape)==3):
+        #Si los tiene la convierte a escala de grises con un solo canal
+        im=cv.cvtColor(im2, cv.COLOR_BGR2GRAY)
+    else: 
+        #En caso de que la imagen original es de un canal se crea una copia
+        im = copy.copy(im2)
+    
+    im=cv.equalizeHist(im)
+    hist4=cv.calcHist([im], [0], None, [256], [0, 256])
     plt.plot(hist4, color='gray' )
     plt.title("Histograma Ecualización")
     plt.xlabel('Intensidad de iluminacion')
     plt.ylabel('Cantidad de pixeles')
     plt.show()
-    cv.imshow('Ecualización', im2)
-    cv.waitKey()
-    return im2
+    #cv.imshow('Ecualización', im)
+    #cv.waitKey()
+    return im
     
 # Función que realiza estrechamiento del histograma
-# Recibe como parámetros la ruta de la imagen y los valores deseados de compresión
+# Recibe como parámetros la imagen y los valores deseados de compresión
 # Devuelve una nueva imagen (matriz numpy) con los cambios realizados
-def estrechamiento(img2, Cmin, Cmax):
+def estrechamiento(img, Cmin, Cmax):
     
-    #Abre la imagen original
-    #img = cv.imread(r_img)
-    img = copy.copy(img2)
-    #Crea una copia de la imagen en escala de grises
-    nueva_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    #Verifica si la imagen tiene 3 canales RGB
+    if(len(img.shape)==3):
+        #Si los tiene la convierte a escala de grises con un solo canal
+        nueva_img=cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    else:    
+        #En caso de que la imagen original es de un canal se crea una copia
+        nueva_img = copy.copy(img)
     
     # Valores de la formula
     rmin = np.amin(img)
@@ -182,8 +204,8 @@ def estrechamiento(img2, Cmin, Cmax):
     plt.show()
     
     # Muestra los cambios realizados en la imagen
-    cv.imshow('Estrechamiento', nueva_img)
-    cv.waitKey()
+    #cv.imshow('Estrechamiento', nueva_img)
+    #cv.waitKey()
     
     return nueva_img
 
@@ -196,7 +218,7 @@ def principal():
     #Histograma de la imagen original
     hist=h_original(im)
     #Histogramas RGB
-    histogramas_RGB("Imagen1.png")
+    histogramas_RGB(copy.copy(im2))
     #Histograma desplazado a la derecha
     desplazamiento_d(im,a)
     #Histograma desplazado a la izquierda
@@ -206,5 +228,4 @@ def principal():
     #Histograma de la imagen ecualizada
     ecualizacion(im)
     # Estrechamiento de Histograma
-    estrechamiento("Imagen1.png", 50, 150)
-#principal()
+    estrechamiento(copy.copy(im2), 50, 150)
