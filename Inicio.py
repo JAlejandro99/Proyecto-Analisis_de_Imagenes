@@ -45,6 +45,110 @@ def button_hover(e):
 def button_hover_leave(e):
     status_label.config(text="")
 
+#Ventana para elgir un valor de desplazamiento
+def eligeDesp(desplazamiento):
+    
+    a = -1
+    
+    def guardaDato():
+        try:
+            a = int(my_spin.get())
+            
+            #Comprueba el valor del dato ingresado
+            if(a>=0 and a<=255):
+               despWindow.destroy()
+               if(desplazamiento == False):
+                   #Desplazamiento a la izquierda
+                   img = desplazamiento_i(im[img_sel],a)
+                   agregar_img(img)
+               else:
+                    #Desplazamiento a la derecha
+                    img = desplazamiento_d(im[img_sel],a)
+                    agregar_img(img)
+                   
+            else:
+                messagebox.showerror(message="El valor debe ser un entero entre 0 y 255", 
+                             title="Valor fuera de rango")
+            
+        except:
+            messagebox.showerror(message="No se aceptan caracteres, solo números", 
+                             title="Tipo de dato incorrecto")
+
+    despWindow = Toplevel(root)
+    despWindow.title("Desplazamiento")
+    despWindow.geometry("200x150")
+    
+    lblspin = Label(despWindow, text="Elige un valor de desplazamiento")
+    lblspin.pack(pady=10)
+    
+    #Spinbox para elegir un valor
+    my_spin = Spinbox(despWindow, from_=0, to=255,)
+    my_spin.pack(pady=10)
+    
+    #Boton para enviar
+    my_button = Button(despWindow, 
+                       text="Aceptar", 
+                       command= guardaDato)
+    my_button.pack(pady=20)
+
+#Ventana para elegir valores de estrechamiento
+def eligeEstr():
+    
+    Cmax = 0
+    Cmin = 0
+    
+    def guardaDatos():
+        try:
+            Cmin = int(my_spin.get())
+            Cmax = int(my_spin2.get())
+            
+            #Comprueba el valor de los datos ingresado
+            if((Cmax>=0 and Cmax<=255) and (Cmin>=0 and Cmin<=255)):
+                print(str(Cmin) + str(Cmax) )
+                despWindow.destroy()
+                img = estrechamiento(im[img_sel],Cmin, Cmax)
+                agregar_img(img)
+                                   
+            else:
+                messagebox.showerror(message="El valor debe ser un entero entre 0 y 255", 
+                             title="Valor fuera de rango")
+            
+        except:
+            messagebox.showerror(message="No se aceptan caracteres, solo números", 
+                             title="Tipo de dato incorrecto")
+
+    despWindow = Toplevel(root)
+    despWindow.title("Estrechamiento")
+    despWindow.geometry("300x200")
+    
+    lblspin = Label(despWindow, text="Elige los valores de compresión")
+    lblspin.pack()
+    
+    lblspin2 = Label(despWindow, text="Cmin:")
+    lblspin2.place(x=40, y=50)
+    lblspin.pack(pady=10)
+    
+    #Spinbox para elegir el valor de Cmin
+    my_spin = Spinbox(despWindow, from_=0, to=255,)
+    my_spin.place(x=50, y=20)
+    my_spin.pack(pady=10)
+    
+    lblspin2 = Label(despWindow, text="Cmax:")
+    lblspin2.place(x=40, y=90)
+    lblspin.pack()
+
+    #Spinbox para elegir el valor de Cmax
+    my_spin2 = Spinbox(despWindow, from_=0, to=255,)
+    my_spin2.place(x=50, y=70)
+    my_spin2.pack(pady=10)
+    
+    
+    #Boton para enviar
+    my_button = Button(despWindow, 
+                       text="Aceptar", 
+                       command= guardaDatos)
+    my_button.pack(pady=20)
+
 #Funcion con la que se pide una imagen al usuario
 def addImg():
     global nomb_imagenes,im,imagenes,imagenesLabel,img_sel,seleccion_anterior
@@ -98,17 +202,17 @@ def verHist():
     
 #Hacer que reciba imagenes en lugar de el nombre
 def verHistRGB():
-    histogramas_RGB(im[img_sel])
+    #Si la imagen recibida solo tiene un canal muestra mensaje de error
+    if( histogramas_RGB(im[img_sel]) ):
+        messagebox.showerror(message="La imagen debe tener los 3 canales RGB", 
+                             title="Imagen en escala de grises")
+        
 
 def despIzqHist():
-    a = 50
-    img = desplazamiento_i(im[img_sel],a)
-    agregar_img(img)
-
+    eligeDesp(False)
+    
 def despDerHist():
-    a = 50
-    img = desplazamiento_d(im[img_sel],a)
-    agregar_img(img)
+    eligeDesp(True)
 
 def estHist():
     hist=cv.calcHist([im[img_sel]], [0], None, [256], [0, 256])
@@ -121,8 +225,7 @@ def histEcual():
 
 #Hacer que reciba imagenes en lugar de un nombre
 def histEstr():
-    img = estrechamiento(im[img_sel],50, 150)
-    agregar_img(img)
+    eligeEstr()
 
 def eliminar_img():
     global imagenes,imagenesLabel,im,nomb_imagenes,seleccion_anterior,img_sel,frame
