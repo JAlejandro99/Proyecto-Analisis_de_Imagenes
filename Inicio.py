@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 import cv2 as cv
 from PIL import Image,ImageTk
 from numpy import *
@@ -48,9 +49,9 @@ def button_hover_leave(e):
 #Ventana para elgir un valor de desplazamiento
 def eligeDesp(desplazamiento):
     
-    a = -1
-    
     def guardaDato():
+        a = -1
+
         try:
             a = int(my_spin.get())
             
@@ -74,9 +75,18 @@ def eligeDesp(desplazamiento):
             messagebox.showerror(message="No se aceptan caracteres, solo números", 
                              title="Tipo de dato incorrecto")
 
+    #Ubica la ventana en el centro
+    ancho_v = 200
+    alto_v = 150
+
+    x_v = root.winfo_screenwidth() // 2 - ancho_v // 2
+    y_v = root.winfo_screenheight() // 2 - alto_v // 2
+
+    pos = str(ancho_v) + "x" + str(alto_v) + "+" + str(x_v) + "+" + str(y_v)
     despWindow = Toplevel(root)
     despWindow.title("Desplazamiento")
-    despWindow.geometry("200x150")
+    despWindow.geometry(pos)
+    despWindow.resizable(ancho_v, alto_v)
     
     lblspin = Label(despWindow, text="Elige un valor de desplazamiento")
     lblspin.pack(pady=10)
@@ -93,18 +103,17 @@ def eligeDesp(desplazamiento):
 
 #Ventana para elegir valores de estrechamiento
 def eligeEstr():
-    
-    Cmax = 0
-    Cmin = 0
-    
+ 
     def guardaDatos():
+        Cmax = 0
+        Cmin = 0
+
         try:
             Cmin = int(my_spin.get())
             Cmax = int(my_spin2.get())
             
             #Comprueba el valor de los datos ingresado
             if((Cmax>=0 and Cmax<=255) and (Cmin>=0 and Cmin<=255)):
-                print(str(Cmin) + str(Cmax) )
                 despWindow.destroy()
                 img = estrechamiento(im[img_sel],Cmin, Cmax)
                 agregar_img(img)
@@ -117,9 +126,18 @@ def eligeEstr():
             messagebox.showerror(message="No se aceptan caracteres, solo números", 
                              title="Tipo de dato incorrecto")
 
+    #Ubica la ventana en el centro
+    ancho_v = 300
+    alto_v = 200
+
+    x_v = root.winfo_screenwidth() // 2 - ancho_v // 2
+    y_v = root.winfo_screenheight() // 2 - alto_v // 2
+
+    pos = str(ancho_v) + "x" + str(alto_v) + "+" + str(x_v) + "+" + str(y_v)
+   
     despWindow = Toplevel(root)
     despWindow.title("Estrechamiento")
-    despWindow.geometry("300x200")
+    despWindow.geometry(pos)
     
     lblspin = Label(despWindow, text="Elige los valores de compresión")
     lblspin.pack()
@@ -196,12 +214,22 @@ def agregar_img(img):
     seleccion_anterior = img_sel
 
 def verHist():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     #Histograma de la imagen original
     print(img_sel)
     hist = h_original(im[img_sel])
     
 #Hacer que reciba imagenes en lugar de el nombre
 def verHistRGB():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     #Si la imagen recibida solo tiene un canal muestra mensaje de error
     if( histogramas_RGB(im[img_sel]) ):
         messagebox.showerror(message="La imagen debe tener los 3 canales RGB", 
@@ -209,22 +237,47 @@ def verHistRGB():
         
 
 def despIzqHist():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     eligeDesp(False)
     
 def despDerHist():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     eligeDesp(True)
 
 def estHist():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     hist=cv.calcHist([im[img_sel]], [0], None, [256], [0, 256])
     img = estiramiento(hist,im[img_sel])
     agregar_img(img)
 
 def histEcual():
+    #Si no hay imagenes seleccionadas muestra advertencia
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     img = ecualizacion(im[img_sel])
     agregar_img(img)
 
 #Hacer que reciba imagenes en lugar de un nombre
 def histEstr():
+    #Si no hay imagenes seleccionadas
+    if(len(im)==0):
+        messagebox.showwarning(message="Debes seleccionar una imagen", 
+                             title="Imagen no seleccionada")
+        return
     eligeEstr()
 
 def eliminar_img():
@@ -265,7 +318,16 @@ def leer_imagen(nombre):
 #Raíz
 root=Tk()
 root.title("Ventana de pruebas")
-root.geometry("900x700")
+
+#Ubica la raiz en el centro de la pantalla
+
+ancho_v = root.winfo_screenwidth() - 400
+alto_v = root.winfo_screenheight() - 200
+x_v = root.winfo_screenwidth() // 2 - ancho_v // 2
+y_v = root.winfo_screenheight() // 2 - alto_v // 2
+
+pos = str(ancho_v) + "x" + str(alto_v) + "+" + str(x_v) + "+" + str(y_v)
+root.geometry(pos)
 root.config(bd=20)
 
 w=700
