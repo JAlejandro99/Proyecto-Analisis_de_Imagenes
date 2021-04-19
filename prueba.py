@@ -163,6 +163,7 @@ def ecualizacion(im):
         im = copy.copy(im2)"""
     
     pixeles=[]
+    im=copy.copy(im2)
     total=im.shape[0]*im.shape[1]
     frecuencia={}
     
