@@ -153,15 +153,71 @@ def estiramiento(hist,im2):
 #ECUALIZACIÓN
 def ecualizacion(im2):
     
-    #Verifica si la imagen tiene 3 canales RGB
+    """#Verifica si la imagen tiene 3 canales RGB
     if(len(im2.shape)==3):
         #Si los tiene la convierte a escala de grises con un solo canal
         im=cv.cvtColor(im2, cv.COLOR_BGR2GRAY)
     else: 
         #En caso de que la imagen original es de un canal se crea una copia
-        im = copy.copy(im2)
+        im = copy.copy(im2)"""
     
-    im=cv.equalizeHist(im)
+    pixeles=[]
+    total=im.shape[0]*im.shape[1]
+    frecuencia={}
+    
+    #Valor RGB de cada pixel de la imagen
+    k=0
+    i=0
+    while i<im.shape[0]:
+        j=0
+        while j<im.shape[1]:
+            b,g,r=im[i,j]
+            pixeles.insert(k,(b+g+r))
+            k+=1
+            j+=1
+        i+=1
+    
+    pixeles=sorted(pixeles)#Se ordenan los pixeles de menor a mayor
+    minimo=min(pixeles)#Se obtiene el valor mínimo de los pixeles
+    maximo=max(pixeles)#Se obtiene el valor máximo de los pixeles
+    
+    #Guarda en un diccionario la frecuencia de cada nivel RGB
+    for pixel in pixeles:
+        if pixel in frecuencia:
+            frecuencia[pixel]+=1
+        else:
+            frecuencia[pixel]=1
+    
+    #Toma solo la frecuencia de cada nivel de RGB del diccionario         
+    n_g=list(frecuencia.values())
+    
+    #Probabilidad de ocurrencia posterior del nivel de RGB
+    pp_g=[]
+    acum=0
+    
+    for i in range(len(n_g)):
+        acum=acum+n_g[i]
+        pp_g.insert(i,(acum/total))
+    
+    #Calculando la ecualización uniforme
+    f_g=[]
+    for i in range(len(pp_g)):
+        f_g.insert(i,math.floor((maximo-minimo)*(pp_g[i]+minimo)))
+    
+    #Obtiene los valores de los pixeles RGB
+    pix=list(frecuencia.keys())
+    
+    i=0
+    while i<im.shape[0]:
+        j=0
+        while j<im.shape[1]:
+            b,g,r=im[i,j]
+            if b+g+r in pix:
+                v=pix.index(b+g+r)
+                im[i,j]=f_g[v]
+            j+=1
+        i+=1
+
     hist4=cv.calcHist([im], [0], None, [256], [0, 256])
     plt.plot(hist4, color='gray' )
     plt.title("Histograma Ecualización")
