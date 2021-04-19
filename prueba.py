@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cv2 as cv
 import copy
+import math
 
 #Histograma de imagen original
 def h_original(im):
