@@ -151,7 +151,7 @@ def estiramiento(hist,im2):
     return im
 
 #ECUALIZACIÓN
-def ecualizacion(im2):
+def ecualizacion(im):
     
     """#Verifica si la imagen tiene 3 canales RGB
     if(len(im2.shape)==3):
