@@ -190,8 +190,11 @@ def addImg():
     seleccion_anterior = img_sel
 
 def saveImg():
-    #nom_img = filedialog.askopenfilename(title="Seleccione archivo",filetypes=(("jpeg files",".jpg"),("png files",".png"),("all files",".*")))
-    pass
+    global im,nomb_imagenes
+    if nomb_imagenes[img_sel]=="nueva":
+        nom_img = filedialog.asksaveasfilename(title="Nombre del archivo a guardar",filetypes=(("jpeg files",".jpg"),("png files",".png"),("all files",".*")))
+        cv.imwrite(nom_img,im[img_sel])
+        nomb_imagenes[img_sel] = nom_img
 
 def agregar_img(img):
     global nomb_imagenes,im,imagenes,imagenesLabel,img_sel,seleccion_anterior
